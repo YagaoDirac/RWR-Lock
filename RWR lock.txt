@@ -1,0 +1,60 @@
+RWR Lock
+
+yagaodirac
+
+
+
+<Updata>
+I believe the test is passed.
+
+I build up 2 simplified "thread" in a single threaded environment.
+Simply import the project into vs code and run it.
+</Updata>
+
+background:
+Race condition is a very classic problem in multi thread programming.
+I just found this:
+
+Race Conditions and How to Prevent Them - A Look at Dekker's Algorithm:
+by Spanning Tree
+https://www.youtube.com/watch?v=MqnpIwN7dz0
+
+In the video, the Dekker's Algo is explained.
+I have 2 questions,
+1, which thread is responsible for modifying the turn indicator?
+2, how to scale this also to cases with more than 2 thread?
+These 2 questions are related mutually.
+Basically, I guess, in the Dekker's algo, when a thread quits the critical zone, it modifies the turn indicator, before it turn off its own light(or flag or any name I don't care). It means the indicator is also in the critical zone. But what happens if 3(or more) threads are all trying to get in. I mean, how can the quiting thread determine the next thread?
+(Thank DyXel@github for pointing out a bug in my example. DyXel commented:
+As said in the video, if no other light is ON, then thread C is free to go in even if B is absent (if its absent then it means that its light couldn't possibly be ON).
+
+<update/>Let's say, thread A is quiting, while BCD are waiting. A read the waiting list and decide to set the next to B. After A read the waiting list, before A actually writes into the indicator, B times out and decides to come back later. Then, indicator is set to B, but B is absent, while thread C and D are waiting. The indicator has a condition no to work.
+
+
+I invented something similar recently, but I am still testing it. I'm very likely to find that people already invented my idea a long time ago. But before I find it, let me call my idea RWR lock, which is short for Read-Write-Read Lock.
+The rule is, every thread has 1 flag(or light or anything). The flag starts unset. Every thread know where flags of other threads are. 
+Again, all flags start unset.
+When a thread tried to access the critical zone, it does this:
+Read flags of all other threads,
+If any is/are set, then fail, it can retry immediately or later.
+If all is/are unset, set up its own flag.
+Read flags of all other threads again,
+If any is/are set, then fail, unset its own flag. it can retry immediately or later.
+If all is/are unset, succeed, access the critical zone.
+When quit the critical zone, unset its own flag.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
