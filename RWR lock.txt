@@ -4,6 +4,9 @@ yagaodirac
 
 
 
+To do list:
+Now the structure is Read-Write-Read. I believe the first Reading is optional. Maybe I'll test it later.
+
 <Updata>
 I believe the test is passed.
 
