@@ -8,9 +8,12 @@ To do list:
 Now the structure is Read-Write-Read. I believe the first Reading is optional. Maybe I'll test it later.
 
 <Updata>
-I believe the test is passed.
+Test 1 passed(RWR_test).
+But test 2 didn't(RWR_test2).
+I wrote 2 pseudo threads in a single thread environment for the 1st test.
+Test 2 is a real unsafe rust program. The rwr lock doesn't help significantly.
+I think I can draw a conclusion that in rust, volatile op doesn't make sure a read is blocked by a write.
 
-I build up 2 simplified "thread" in a single threaded environment.
 Simply import the project into vs code and run it.
 </Updata>
 
